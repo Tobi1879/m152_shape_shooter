@@ -28,10 +28,11 @@ function init() {
         // checken ob der Click auf dem Start Button gemacht (rect)
         if ((x >= canvas.width / 4) && (x <= 3 * canvas.width / 4) && (y >= 3 * canvas.height / 8) && (y <= 5 * canvas.height / 8)) {
             startGame();
+            canvas.removeEventListener("click", handleMouseDown, true); // Succeeds
         }
     });
 }
 
 function startGame() {
-
+    alert("start click")
 }
