@@ -2,6 +2,7 @@ var canvas;
 var ctx;
 var rect = new Rect(1, 1, 1, 1, 'red');
 var circle = new Circle(100, 75, 50, 'red');
+var triangle = new Triangle(1, 1, 1, 1, 'red');
 var points = 0;
 
 window.onload = init();
@@ -72,11 +73,10 @@ function startGame() {
         }
     }, 1000);
 
-    let triangle = new Triangle(200, 200, 300, 300, 'red');
-    triangle.draw();
-
+    newTriangle();
     newCircle();
     newRect();
+
     Update();
 }
 
@@ -104,7 +104,6 @@ function Triangle(x1, y1, x2, y2, c) {
     this.dy *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.draw = function() {
-        console.log("draw Triangle");
         ctx.beginPath();
         ctx.moveTo(this.x1, this.y1);
         ctx.lineTo(this.x2, this.y2);
@@ -113,8 +112,6 @@ function Triangle(x1, y1, x2, y2, c) {
 
         ctx.fillStyle = c;
         ctx.fill();
-        console.log("draw Triangle finish");
-
     }
 
     this.animate = function() {
@@ -123,7 +120,7 @@ function Triangle(x1, y1, x2, y2, c) {
         this.x2 += this.dx;
         this.y2 += this.dy;
         this.x3 += this.dx;
-        this.y4 += this.dy;
+        this.y3 += this.dy;
 
         //Damit sie von den Wänden abprallen
         if (this.x1 > canvas.width || this.x1 < 0 || this.x2 > canvas.width || this.x2 < 0 || this.x3 > canvas.width || this.x3 < 0) {
@@ -136,6 +133,16 @@ function Triangle(x1, y1, x2, y2, c) {
 
         this.draw();
     }
+}
+
+this.newTriangle = function() {
+    r = Math.floor(Math.random() * 30) + 100;
+    let x1 = Math.random() * (canvas.width - r * 2) + r;
+    let y1 = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
+    theta = 0.5;
+    x2 = x1 + r * Math.cos(theta);
+    y2 = y1 + r * Math.sin(theta)
+    triangle = new Triangle(x1, y1, x2, y2, 'rgb(155,187,89)');
 }
 
 function Circle(x, y, r, c) {
@@ -158,7 +165,7 @@ function Circle(x, y, r, c) {
         ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
         ctx.stroke();
         ctx.fill();
-        console.log(circle.x + ", " + circle.y + ", " + circle.r);
+        //console.log(circle.x + ", " + circle.y + ", " + circle.r);
 
     }
 
@@ -182,7 +189,7 @@ this.newCircle = function() {
     let r = Math.floor(Math.random() * 30) + 100;
     let x = Math.random() * (canvas.width - r * 2) + r;
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
-    let c = 'red';
+    let c = '#8064A2';
     this.circle = new Circle(x, y, r, c);
     /*ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.Pi * 2);
@@ -231,7 +238,7 @@ this.newRect = function() {
     let width = Math.floor(Math.random() * 30) + 100;
     let x = Math.random() * (canvas.width - width * 2) + width;
     let y = Math.random() * (9 * canvas.height / 10 - height * 2) + height + canvas.width / 10;
-    let color = 'red';
+    let color = '#4F81BD';
     this.rect = new Rect(x, y, width, height, color);
 }
 
@@ -251,12 +258,63 @@ canvas.addEventListener('click', function(e) {
         ctx.textAlign = "left";
         ctx.fillText('Points: ' + points, 50, 50);
     }
+
+    const mousePos = {
+        x: e.clientX - canvas.offsetLeft,
+        y: e.clientY - canvas.offsetTop
+    };
+
+    // get pixel under cursor
+    const pixel = ctx.getImageData(mousePos.x, mousePos.y, 1, 1).data;
+
+    // create rgb color for that pixel
+    const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+
+    // find a circle with the same colour
+
+    console.log(color + ", " + triangle.c);
+    if (color === triangle.c) {
+        //remove rect
+        triangle = null;
+        //new Rect
+        newTriangle();
+        //Points
+        points += 100;
+        // remove Ponints Text
+        ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
+        // Punkte Text
+        ctx.fillStyle = "#f00";
+        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+        ctx.textAlign = "left";
+        ctx.fillText('Points: ' + points, 50, 50);
+    }
+
+    function isIntersect(point, circle) {
+        return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
+    }
+
+    if (isIntersect(mousePos, circle)) {
+        //remove rect
+        circle = null;
+        //new Rect
+        newCircle();
+        //Points
+        points += 25;
+        // remove Ponints Text
+        ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
+        // Punkte Text
+        ctx.fillStyle = "#f00";
+        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+        ctx.textAlign = "left";
+        ctx.fillText('Points: ' + points, 50, 50);
+    }
 })
 
 function Update() {
     ctx.clearRect(0, canvas.height / 10, canvas.width, canvas.height * 9 / 10);
     circle.animate();
     rect.animate();
+    triangle.animate();
     //circle.animate();
 
     requestAnimationFrame(Update);
