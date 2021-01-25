@@ -1,5 +1,6 @@
 var canvas;
 var ctx;
+var rect = new Rect(1, 1, 1, 1, 'red');
 
 window.onload = init();
 
@@ -58,7 +59,7 @@ function startGame() {
 
     var x = setInterval(function() {
         // Achtung Spielfeld 9/10 vom Screen
-        ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.width / 10);
+        ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.height / 10);
         ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
         countdown--;
         if (countdown == 0) {
@@ -68,6 +69,10 @@ function startGame() {
             gameOver();
         }
     }, 1000);
+
+
+    newRect();
+    Update();
 }
 
 function gameOver() {
@@ -98,6 +103,60 @@ function Circle(x, y, r, c) {
     }
 }
 
-function Rect() {
+function Rect(x, y, width, height, color) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color
 
+    this.dx = Math.random() * 4 + 1;
+    this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    this.dy = Math.random() * 4 + 1;
+    this.dy *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+
+    this.draw = function() {
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.rect(this.x, this.y, this.height, this.width);
+        ctx.fill();
+    }
+
+    this.animate = function() {
+        this.x += this.dx;
+        this.y += this.dy;
+
+        if (this.x + this.width > canvas.width || this.x < 0) {
+            this.dx = -this.dx;
+        }
+
+        if (this.y + this.height > canvas.height || this.y < canvas.height / 10) {
+            this.dy = -this.dy;
+        }
+
+        this.draw();
+    }
+}
+
+this.newRect = function() {
+    let height = Math.floor(Math.random() * 30) + 100;
+    let width = Math.floor(Math.random() * 30) + 100;
+    let x = Math.random() * (canvas.width - width * 2) + width;
+    let y = Math.random() * (9 * canvas.height / 10 - height * 2) + height + canvas.width / 10;
+    let color = 'red';
+    this.rect = new Rect(x, y, width, height, color);
+}
+
+canvas.addEventListener('click', function(e) {
+    if (e.clientX > rect.x && e.clientX < rect.x + rect.width && e.clientY > rect.y && e.clientY < rect.y + rect.height) {
+        //remove rect
+        rect = null;
+    }
+})
+
+function Update() {
+    ctx.clearRect(0, canvas.height / 10, canvas.width, canvas.height * 9 / 10);
+    rect.animate();
+
+    requestAnimationFrame(Update);
 }
