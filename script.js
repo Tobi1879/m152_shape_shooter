@@ -1,7 +1,7 @@
 var canvas;
 var ctx;
 var rect = new Rect(1, 1, 1, 1, 'red');
-var circle = new Circle(100, 75, 50, 0, 1.5 * Math.PI);
+var circle = new Circle(100, 75, 50, 'red');
 var points = 0;
 
 window.onload = init();
@@ -72,9 +72,8 @@ function startGame() {
         }
     }, 1000);
 
-
-    newRect();
     newCircle();
+    newRect();
     Update();
 }
 
@@ -98,10 +97,12 @@ function Circle(x, y, r, c) {
 
     this.draw = function() {
         ctx.beginPath();
-        ctx.fillStyle = this.c;
-        //ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
-        ctx.arc(100, 100, 20, 0, Math.Pi * 2);
+        ctx.fillStyle = 'red';
+        ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
+        ctx.stroke();
         ctx.fill();
+        console.log(circle.x + ", " + circle.y + ", " + circle.r);
+
     }
 
     this.animate = function() {
@@ -126,6 +127,11 @@ this.newCircle = function() {
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
     let c = 'red';
     this.circle = new Circle(x, y, r, c);
+    /*ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.Pi * 2);
+    //ctx.arc(100, 100, 80, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();*/
 }
 
 function Rect(x, y, width, height, color) {
@@ -192,9 +198,9 @@ canvas.addEventListener('click', function(e) {
 
 function Update() {
     ctx.clearRect(0, canvas.height / 10, canvas.width, canvas.height * 9 / 10);
-    rect.animate();
     circle.animate();
-    console.log(circle.x + ", " + circle.y + ", " + circle.r);
+    rect.animate();
+    //circle.animate();
 
     requestAnimationFrame(Update);
 }
