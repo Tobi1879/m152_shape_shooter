@@ -44,27 +44,26 @@ function startGame() {
     let countdown = 45;
 
     // Punkte Text
-    ctx.fillStyle = "#f00";
+    ctx.fillStyle = "rgb(192,80,77)";
     ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
     ctx.textAlign = "left";
     ctx.fillText('Points: ' + points, 50, 50);
 
     // Titel Text
-    ctx.fillStyle = "#f00";
-    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
     ctx.textAlign = "center";
     ctx.fillText('Shape Shooter', canvas.width / 2, 50);
 
     // Countdown Text
-    ctx.fillStyle = "#f00";
-    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
     ctx.textAlign = "right";
+    ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
 
     var x = setInterval(function() {
         // Achtung Spielfeld 9/10 vom Screen
         ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.height / 10);
-        ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "rgb(192,80,77)";
         countdown--;
+        ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
         if (countdown == 0) {
             ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.width / 10);
             ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
@@ -256,6 +255,7 @@ canvas.addEventListener('click', function(e) {
         ctx.fillStyle = "#f00";
         ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
+        ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
     }
 
@@ -286,6 +286,7 @@ canvas.addEventListener('click', function(e) {
         ctx.fillStyle = "#f00";
         ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
+        ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
     }
 
@@ -306,12 +307,13 @@ canvas.addEventListener('click', function(e) {
         ctx.fillStyle = "#f00";
         ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
+        ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
     }
 })
 
 function Update() {
-    ctx.clearRect(0, canvas.height / 10, canvas.width, canvas.height * 9 / 10);
+    ctx.clearRect(0, canvas.height / 10 - 10, canvas.width, canvas.height);
     circle.animate();
     rect.animate();
     triangle.animate();
