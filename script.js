@@ -1,11 +1,14 @@
+var canvas;
+var ctx;
+
 window.onload = init();
 
 function init() {
     /** @type {HTMLCanvasElement} */
-    var canvas = document.getElementById("gameboard");
+    canvas = document.getElementById("gameboard");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    let ctx = canvas.getContext('2d');
+    ctx = canvas.getContext('2d');
 
     // Start Button
     ctx.fillStyle = '#8064A2';
@@ -28,11 +31,45 @@ function init() {
         // checken ob der Click auf dem Start Button gemacht (rect)
         if ((x >= canvas.width / 4) && (x <= 3 * canvas.width / 4) && (y >= 3 * canvas.height / 8) && (y <= 5 * canvas.height / 8)) {
             startGame();
-            canvas.removeEventListener("click", handleMouseDown, true); // Succeeds
         }
-    });
+    }, { once: true });
 }
 
 function startGame() {
-    alert("start click")
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let countdown = 45;
+
+    // Punkte Text
+    ctx.fillStyle = "#f00";
+    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+    ctx.textAlign = "left";
+    ctx.fillText('Points: 0', 50, 50);
+
+    // Titel Text
+    ctx.fillStyle = "#f00";
+    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+    ctx.textAlign = "center";
+    ctx.fillText('Shape Shooter', canvas.width / 2, 50);
+
+    // Countdown Text
+    ctx.fillStyle = "#f00";
+    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+    ctx.textAlign = "right";
+
+    var x = setInterval(function() {
+        // Achtung Spielfeld 9/10 vom Screen
+        ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.width / 10);
+        ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
+        countdown--;
+        if (countdown == 0) {
+            ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.width / 10);
+            ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
+            clearInterval(x);
+            gameOver();
+        }
+    }, 1000);
+}
+
+function gameOver() {
+    // todo
 }
