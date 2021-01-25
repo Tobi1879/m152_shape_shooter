@@ -72,6 +72,9 @@ function startGame() {
         }
     }, 1000);
 
+    let triangle = new Triangle(200, 200, 300, 300, 'red');
+    triangle.draw();
+
     newCircle();
     newRect();
     Update();
@@ -79,6 +82,60 @@ function startGame() {
 
 function gameOver() {
     // todo
+}
+
+function Triangle(x1, y1, x2, y2, c) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.x3 = x1;
+    this.y3 = y2;
+    this.c = c;
+    //xMiddle = (x1 + x2) / 2;
+    //yMiddle = (y1 + y2) / 2;
+
+    //Gibt Richtung
+    this.dx = Math.random() * 4 + 1;
+    //Da man mehrere Richtungen will
+    this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+
+    this.dy = (Math.random() * 4) + 1;
+    this.dy *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+
+    this.draw = function() {
+        console.log("draw Triangle");
+        ctx.beginPath();
+        ctx.moveTo(this.x1, this.y1);
+        ctx.lineTo(this.x2, this.y2);
+        ctx.lineTo(this.x3, this.y3);
+        ctx.closePath();
+
+        ctx.fillStyle = c;
+        ctx.fill();
+        console.log("draw Triangle finish");
+
+    }
+
+    this.animate = function() {
+        this.x1 += this.dx;
+        this.y1 += this.dy;
+        this.x2 += this.dx;
+        this.y2 += this.dy;
+        this.x3 += this.dx;
+        this.y4 += this.dy;
+
+        //Damit sie von den Wänden abprallen
+        if (this.x1 > canvas.width || this.x1 < 0 || this.x2 > canvas.width || this.x2 < 0 || this.x3 > canvas.width || this.x3 < 0) {
+            this.dx = -this.dx;
+        }
+
+        if (this.y1 > canvas.height || this.y1 < canvas.height / 10 || this.y2 > canvas.height || this.y2 < canvas.height / 10 || this.y3 > canvas.height || this.y3 < canvas.height / 10) {
+            this.dy = -this.dy;
+        }
+
+        this.draw();
+    }
 }
 
 function Circle(x, y, r, c) {
