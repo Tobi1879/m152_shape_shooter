@@ -91,10 +91,10 @@ function Circle(x, y, r, c) {
     //Gibt Richtung
     this.dx = Math.random() * 4 + 1;
     //Da man mehrere Richtungen will
-    this.dx = Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.dy = (Math.random() * 4) + 1;
-    this.dy = Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    this.dy *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.draw = function() {
         ctx.beginPath();
@@ -121,7 +121,7 @@ function Circle(x, y, r, c) {
 }
 
 this.newCircle = function() {
-    let r = Math.floor(Math.random() * 30) + 15;
+    let r = Math.floor(Math.random() * 30) + 100;
     let x = Math.random() * (canvas.width - r * 2) + r;
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
     let c = 'red';
