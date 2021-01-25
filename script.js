@@ -77,21 +77,27 @@ function gameOver() {
 }
 
 function shapeShooter() {
-    function Circle(x, y, r, c) {
-        this.x = x;
-        this.y = y;
-        this.r = r;
-        this.c = c;
 
-        //Because of the moving
-        this.dx;
-        this.dy;
+}
 
-        this.drawn = function() {
-            ctx.beginPath();
-            ctx.fillStyle = this.c;
-            ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
-            ctx.fill();
-        }
+function Circle(x, y, r, c) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.c = c;
+
+    //Because of the moving
+    this.dx;
+    this.dy;
+
+    this.drawn = function() {
+        ctx.beginPath();
+        ctx.fillStyle = this.c;
+        ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
+        ctx.fill();
     }
+}
+
+function Rect() {
+
 }
