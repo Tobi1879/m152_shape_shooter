@@ -1,6 +1,8 @@
 var canvas;
 var ctx;
 var rect = new Rect(1, 1, 1, 1, 'red');
+var circle = new Circle(100, 75, 50, 0, 1.5 * Math.PI);
+var points = 0;
 
 window.onload = init();
 
@@ -44,7 +46,7 @@ function startGame() {
     ctx.fillStyle = "#f00";
     ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
     ctx.textAlign = "left";
-    ctx.fillText('Points: 0', 50, 50);
+    ctx.fillText('Points: ' + points, 50, 50);
 
     // Titel Text
     ctx.fillStyle = "#f00";
@@ -72,22 +74,12 @@ function startGame() {
 
 
     newRect();
+    newCircle();
     Update();
 }
 
 function gameOver() {
     // todo
-    alert("start click")
-
-}
-
-function shapeShooter() {
-    const form1 = [];
-    let r = Math.floor(Math.random() * 30) + 15;
-    let x = Math.random() * (canvas.width - r * 2) + r;
-    let y = Math.random() * (canvas.height - r * 2) + r;
-    let c = rgb(68, 68, 65);
-    form1.push(new Circle(x, y, r, c));
 }
 
 function Circle(x, y, r, c) {
@@ -97,17 +89,18 @@ function Circle(x, y, r, c) {
     this.c = c;
 
     //Gibt Richtung
-    this.dx = (Math.random() * 4) + 1;
+    this.dx = Math.random() * 4 + 1;
     //Da man mehrere Richtungen will
     this.dx = Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.dy = (Math.random() * 4) + 1;
     this.dy = Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
-    this.drawn = function() {
+    this.draw = function() {
         ctx.beginPath();
         ctx.fillStyle = this.c;
-        ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
+        //ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
+        ctx.arc(100, 100, 20, 0, Math.Pi * 2);
         ctx.fill();
     }
 
@@ -123,29 +116,24 @@ function Circle(x, y, r, c) {
             this.dy = -this.dy;
         }
 
-        this.drawn();
+        this.draw();
     }
 }
 
-
-
-function Update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < form1.length; i++) {
-        form1[i].animate();
-    }
-
-    requestAnimationFrame(Update);
+this.newCircle = function() {
+    let r = Math.floor(Math.random() * 30) + 15;
+    let x = Math.random() * (canvas.width - r * 2) + r;
+    let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
+    let c = 'red';
+    this.circle = new Circle(x, y, r, c);
 }
-Update();
 
 function Rect(x, y, width, height, color) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.color = color
+    this.color = color;
 
     this.dx = Math.random() * 4 + 1;
     this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
@@ -188,12 +176,25 @@ canvas.addEventListener('click', function(e) {
     if (e.clientX > rect.x && e.clientX < rect.x + rect.width && e.clientY > rect.y && e.clientY < rect.y + rect.height) {
         //remove rect
         rect = null;
+        //new Rect
+        newRect();
+        //Points
+        points += 50;
+        // remove Ponints Text
+        ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
+        // Punkte Text
+        ctx.fillStyle = "#f00";
+        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+        ctx.textAlign = "left";
+        ctx.fillText('Points: ' + points, 50, 50);
     }
 })
 
 function Update() {
     ctx.clearRect(0, canvas.height / 10, canvas.width, canvas.height * 9 / 10);
     rect.animate();
+    circle.animate();
+    console.log(circle.x + ", " + circle.y + ", " + circle.r);
 
     requestAnimationFrame(Update);
 }
