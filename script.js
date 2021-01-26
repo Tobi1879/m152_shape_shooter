@@ -170,9 +170,9 @@ function Circle(x, y, r, c) {
 
     this.draw = function() {
         ctx.beginPath();
-        ctx.fillStyle = 'red';
-        ctx.arc(this.x, this.y, this.r, 0, Math.Pi * 2);
-        ctx.stroke();
+        ctx.fillStyle = this.c;
+        console.log('ctx.arc(' + this.x + ',' + this.y + ',' + this.r + ',' + 0 + ',' + Math.PI * 2 + ')')
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fill();
         //console.log(circle.x + ", " + circle.y + ", " + circle.r);
 
@@ -186,7 +186,7 @@ function Circle(x, y, r, c) {
         if (this.x + this.r > canvas.width || this.x - this.r < 0) {
             this.dx = -this.dx;
         }
-        if (this.y + this.r > canvas.height || this.y - this.r < 0) {
+        if (this.y + this.r > canvas.height || this.y - this.r < canvas.height / 10) {
             this.dy = -this.dy;
         }
 
@@ -195,7 +195,7 @@ function Circle(x, y, r, c) {
 }
 
 this.newCircle = function() {
-    let r = Math.floor(Math.random() * 30) + 100;
+    let r = Math.floor(Math.random() * 15) + 50;
     let x = Math.random() * (canvas.width - r * 2) + r;
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.height / 10;
     let c = '#8064A2';
