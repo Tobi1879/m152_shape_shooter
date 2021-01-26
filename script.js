@@ -198,7 +198,7 @@ this.newCircle = function() {
     let r = Math.floor(Math.random() * 15) + 50;
     let x = Math.random() * (canvas.width - r * 2) + r;
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.height / 10;
-    let c = '#8064A2';
+    let c = 'rgb(128,100,162)';
     this.circle = new Circle(x, y, r, c);
     /*ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.Pi * 2);
@@ -289,6 +289,22 @@ canvas.addEventListener('click', function(e) {
         newTriangle();
         //Points
         points += 100;
+        // remove Ponints Text
+        ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
+        // Punkte Text
+        ctx.fillStyle = "#f00";
+        ctx.textAlign = "left";
+        ctx.fillStyle = "rgb(192,80,77)";
+        ctx.fillText('Points: ' + points, 50, 50);
+    }
+
+    if (color === circle.c) {
+        //remove circle
+        circle = null;
+        //new circle
+        newCircle();
+        //Points
+        points += 25;
         // remove Ponints Text
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
