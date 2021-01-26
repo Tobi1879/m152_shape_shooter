@@ -25,14 +25,14 @@ function init() {
     canvas.height = window.innerHeight;
     ctx = canvas.getContext('2d');
 
-    // create Logo
+    // create logo
     logo();
 
-    // Start Button
+    // Start button
     ctx.fillStyle = "rgb(192,80,77)";
-    // zentriertes Rechteck
+    // centered rect
     ctx.fillRect(canvas.width / 4, 3 * canvas.height / 8, canvas.width / 2, canvas.height / 4);
-    // Start Text
+    // Start text
     ctx.fillStyle = "rgb(68, 68, 65)";
     changeFonts(1)
     ctx.textAlign = "center";
@@ -43,10 +43,7 @@ function init() {
         let x = event.clientX;
         let y = event.clientY;
 
-        //alert("x: " + x + " y: " + y + "canvas.width: " + canvas.width + "canvas.height: " + canvas.height);
-        //alert("if (x >= " + canvas.width / 4 + "&& x <= " + 3 * canvas.width / 4 + "&& y >=" + 3 * canvas.height / 8 + "&& y <= " + 5 * canvas.height / 8 + ")")
-
-        // checken ob der Click auf dem Start Button gemacht (rect)
+        // check if click on rect
         if ((x >= canvas.width / 4) && (x <= 3 * canvas.width / 4) && (y >= 3 * canvas.height / 8) && (y <= 5 * canvas.height / 8) && startClicked == false) {
             startClicked = true;
             startGame();
@@ -54,26 +51,29 @@ function init() {
     });
 }
 
+/**
+ * Starts the game
+ */
 function startGame() {
     changeFonts(1);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let countdown = 45;
 
-    // Punkte Text
+    // Points text
     ctx.fillStyle = "rgb(192,80,77)";
     ctx.textAlign = "left";
     ctx.fillText('Points: ' + points, 50, 50);
 
-    // Titel Text
+    // Titel text
     ctx.textAlign = "center";
     ctx.fillText('Shape Shooter', canvas.width / 2, 50);
 
-    // Countdown Text
+    // Countdown text
     ctx.textAlign = "right";
     ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
 
+    // 1 second interval for countdown
     var x = setInterval(function() {
-        // Achtung Spielfeld 9/10 vom Screen
         ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.height / 10);
         ctx.textAlign = "right";
         ctx.fillStyle = "rgb(192,80,77)";
@@ -87,22 +87,22 @@ function startGame() {
         }
     }, 1000);
 
+    // create first forms
     newTriangle();
     newCircle();
     newRect();
 
-    //console.log(canvas.width + ", " + canvas.height);
-
+    // Update function for the animation
     Update();
 }
 
-/**
+/** like a class for the Triangles
  * 
- * @param {*} x1     
- * @param {*} y1 
- * @param {*} x2 
- * @param {*} y2 
- * @param {*} c 
+ * @param {*} x1    x coordinate of point 1 of the triangle
+ * @param {*} y1    y coordinate of point 1 of the triangle
+ * @param {*} x2    x coordinate of point 2 of the triangle
+ * @param {*} y2    y coordinate of point 2 of the triangle
+ * @param {*} c     fill color
  */
 function Triangle(x1, y1, x2, y2, c) {
     this.x1 = x1;
@@ -112,12 +112,9 @@ function Triangle(x1, y1, x2, y2, c) {
     this.x3 = x1;
     this.y3 = y2;
     this.c = c;
-    //xMiddle = (x1 + x2) / 2;
-    //yMiddle = (y1 + y2) / 2;
 
-    //Gibt Richtung
+    // direction
     this.dx = Math.random() * 4 + 1;
-    //Da man mehrere Richtungen will
     this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.dy = (Math.random() * 4) + 1;
@@ -142,7 +139,7 @@ function Triangle(x1, y1, x2, y2, c) {
         this.x3 += this.dx;
         this.y3 += this.dy;
 
-        //Damit sie von den Wänden abprallen
+        // bounce from the walls
         if (this.x1 > canvas.width || this.x1 < 0 || this.x2 > canvas.width || this.x2 < 0 || this.x3 > canvas.width || this.x3 < 0) {
             this.dx = -this.dx;
         }
@@ -165,15 +162,21 @@ this.newTriangle = function() {
     triangle = new Triangle(x1, y1, x2, y2, 'rgb(155,187,89)');
 }
 
+/** like a class for the Circles
+ * 
+ * @param {*} x    x coordinate of middle point
+ * @param {*} y    y coordinate of middle point
+ * @param {*} r    radius of circle
+ * @param {*} c    fill color
+ */
 function Circle(x, y, r, c) {
     this.x = x;
     this.y = y;
     this.r = r;
     this.c = c;
 
-    //Gibt Richtung
+    // direction
     this.dx = Math.random() * 4 + 1;
-    //Da man mehrere Richtungen will
     this.dx *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
 
     this.dy = (Math.random() * 4) + 1;
@@ -184,7 +187,6 @@ function Circle(x, y, r, c) {
         ctx.fillStyle = this.c;
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fill();
-        //console.log(circle.x + ", " + circle.y + ", " + circle.r);
 
     }
 
@@ -192,7 +194,7 @@ function Circle(x, y, r, c) {
         this.x += this.dx;
         this.y += this.dy;
 
-        //Damit sie von den Wänden abprallen
+        // bounce from walls
         if (this.x + this.r > canvas.width || this.x - this.r < 0) {
             this.dx = -this.dx;
         }
@@ -210,13 +212,16 @@ this.newCircle = function() {
     let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.height / 10;
     let c = 'rgb(128,100,162)';
     this.circle = new Circle(x, y, r, c);
-    /*ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.Pi * 2);
-    //ctx.arc(100, 100, 80, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.stroke();*/
 }
 
+/**
+ * 
+ * @param {*} x         x coordinate
+ * @param {*} y         y coordinate
+ * @param {*} width     width of rect
+ * @param {*} height    width of rect
+ * @param {*} color     fill colro
+ */
 function Rect(x, y, width, height, color) {
     this.x = x;
     this.y = y;
@@ -261,6 +266,7 @@ this.newRect = function() {
     this.rect = new Rect(x, y, width, height, color);
 }
 
+// click on forms
 canvas.addEventListener('click', function(e) {
     if (e.clientX > rect.x && e.clientX < rect.x + rect.width && e.clientY > rect.y && e.clientY < rect.y + rect.height) {
         //remove rect
@@ -328,6 +334,9 @@ canvas.addEventListener('click', function(e) {
     }
 })
 
+/**
+ * function for animations
+ */
 function Update() {
     ctx.clearRect(0, canvas.height / 10 - 10, canvas.width, canvas.height);
     circle.animate();
@@ -430,27 +439,3 @@ function logo() {
     ctx.fill();
 
 }
-
-function fadeOut(text, x, y, colorR, colorG, colorB) {
-    var alpha = 1.0, // full opacity
-        interval = setInterval(function() {
-            canvas2.width = canvas2.width; // Clears the canvas
-            ctx2.fillStyle = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + alpha + ")";
-            ctx2.fillStyle = "rgba(255, 0, 0, " + alpha + ")";
-            ctx2.font = "italic 20pt Arial";
-            ctx2.fillText(text, x, y);
-            alpha = alpha - 0.05; // decrease opacity (fade out)
-            if (alpha < 0) {
-                ctx2.width = ctx2.width;
-                clearInterval(interval);
-            }
-        }, 50);
-}
-
-/*function showLogo() {
-    logoCircle.animate();
-    //circle.animate();
-    if (!(circle.x == 47 / 54 * canvas.width && circle.x == 8 / 54 * canvas.width)) {
-        updateAnimationFrame = requestAnimationFrame(Update);
-    }
-}*/
