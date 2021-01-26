@@ -1,7 +1,7 @@
 var canvas;
 var ctx;
 var rect = new Rect(1, 1, 1, 1, 'red');
-var circle = new Circle(100, 75, 50, 'red');
+var circle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'red');
 var triangle = new Triangle(1, 1, 1, 1, 'red');
 var points = 0;
 
@@ -20,7 +20,16 @@ function init() {
     ctx.fillRect(canvas.width / 4, 3 * canvas.height / 8, canvas.width / 2, canvas.height / 4);
     // Start Text
     ctx.fillStyle = "rgb(68, 68, 65)";
-    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+    ctx.font
+    if (canvas.width > 1300) {
+        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+    } else if (canvas.width > 900) {
+        ctx.font = 'bold 40px Arial, Helvetica, sans-serif';
+    } else if (canvas.width > 500) {
+        ctx.font = 'bold 30px Arial, Helvetica, sans-serif';
+    } else {
+        ctx.font = 'bold 20px Arial, Helvetica, sans-serif';
+    }
     ctx.textAlign = "center";
     ctx.fillText('Start', canvas.width / 2, canvas.height / 2 + 12.5);
 
@@ -45,7 +54,6 @@ function startGame() {
 
     // Punkte Text
     ctx.fillStyle = "rgb(192,80,77)";
-    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
     ctx.textAlign = "left";
     ctx.fillText('Points: ' + points, 50, 50);
 
@@ -75,6 +83,8 @@ function startGame() {
     newTriangle();
     newCircle();
     newRect();
+
+    console.log(canvas.width + ", " + canvas.height);
 
     Update();
 }
@@ -137,7 +147,7 @@ function Triangle(x1, y1, x2, y2, c) {
 this.newTriangle = function() {
     r = Math.floor(Math.random() * 30) + 100;
     let x1 = Math.random() * (canvas.width - r * 2) + r;
-    let y1 = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
+    let y1 = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.height / 10;
     theta = 0.5;
     x2 = x1 + r * Math.cos(theta);
     y2 = y1 + r * Math.sin(theta)
@@ -187,7 +197,7 @@ function Circle(x, y, r, c) {
 this.newCircle = function() {
     let r = Math.floor(Math.random() * 30) + 100;
     let x = Math.random() * (canvas.width - r * 2) + r;
-    let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.width / 10;
+    let y = Math.random() * (9 * canvas.height / 10 - r * 2) + r + canvas.height / 10;
     let c = '#8064A2';
     this.circle = new Circle(x, y, r, c);
     /*ctx.beginPath();
@@ -233,10 +243,10 @@ function Rect(x, y, width, height, color) {
 }
 
 this.newRect = function() {
-    let height = Math.floor(Math.random() * 30) + 100;
-    let width = Math.floor(Math.random() * 30) + 100;
+    let height = Math.floor(Math.random() * 30) + 100; // 100 - 130
+    let width = Math.floor(Math.random() * 30) + 100; // 100 - 130
     let x = Math.random() * (canvas.width - width * 2) + width;
-    let y = Math.random() * (9 * canvas.height / 10 - height * 2) + height + canvas.width / 10;
+    let y = Math.random() * (9 * canvas.height / 10 - height * 2) + height + canvas.height / 10;
     let color = '#4F81BD';
     this.rect = new Rect(x, y, width, height, color);
 }
@@ -253,7 +263,6 @@ canvas.addEventListener('click', function(e) {
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
         ctx.fillStyle = "#f00";
-        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
         ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
@@ -284,7 +293,6 @@ canvas.addEventListener('click', function(e) {
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
         ctx.fillStyle = "#f00";
-        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
         ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
@@ -305,7 +313,6 @@ canvas.addEventListener('click', function(e) {
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
         ctx.fillStyle = "#f00";
-        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
         ctx.textAlign = "left";
         ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
