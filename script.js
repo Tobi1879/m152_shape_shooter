@@ -5,6 +5,7 @@ var circle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'red');
 var triangle = new Triangle(1, 1, 1, 1, 'red');
 var points = 0;
 var resultPoints;
+var updateAnimationFrame;
 
 window.onload = init();
 
@@ -16,7 +17,7 @@ function init() {
     ctx = canvas.getContext('2d');
 
     // Start Button
-    ctx.fillStyle = '#8064A2';
+    ctx.fillStyle = "rgb(192,80,77)";
     // zentriertes Rechteck
     ctx.fillRect(canvas.width / 4, 3 * canvas.height / 8, canvas.width / 2, canvas.height / 4);
     // Start Text
@@ -76,8 +77,8 @@ function startGame() {
         if (countdown == 0) {
             ctx.clearRect(canvas.width * 3 / 4, 0, canvas.width / 4, canvas.width / 10);
             ctx.fillText('Time: ' + countdown, canvas.width - 50, 50);
-            clearInterval(x);
             gameOver();
+            clearInterval(x);
         }
     }, 1000);
 
@@ -88,13 +89,6 @@ function startGame() {
     console.log(canvas.width + ", " + canvas.height);
 
     Update();
-}
-
-function gameOver() {
-    window.cancelAnimationFrame(update);
-    resultPoints = points;
-    ctx.clearRect(0, canvas.height / 10 - 10, canvas.width, canvas.height);
-
 }
 
 function Triangle(x1, y1, x2, y2, c) {
@@ -317,26 +311,6 @@ canvas.addEventListener('click', function(e) {
         ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
     }
-
-    function isIntersect(point, circle) {
-        return Math.sqrt((point.x - circle.x) ** 2 + (point.y - circle.y) ** 2) < circle.radius;
-    }
-
-    if (isIntersect(mousePos, circle)) {
-        //remove rect
-        circle = null;
-        //new Rect
-        newCircle();
-        //Points
-        points += 25;
-        // remove Ponints Text
-        ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
-        // Punkte Text
-        ctx.fillStyle = "#f00";
-        ctx.textAlign = "left";
-        ctx.fillStyle = "rgb(192,80,77)";
-        ctx.fillText('Points: ' + points, 50, 50);
-    }
 })
 
 function Update() {
@@ -346,11 +320,34 @@ function Update() {
     triangle.animate();
     //circle.animate();
 
-    requestAnimationFrame(Update);
+    updateAnimationFrame = requestAnimationFrame(Update);
 }
 
 window.addEventListener('resize', updateSizes);
 
 function updateSizes() {
 
+}
+
+function gameOver() {
+    window.cancelAnimationFrame(updateAnimationFrame);
+    rect = null;
+    circle = null;
+    triangle = null;
+    resultPoints = points;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (canvas.width > 1300) {
+        ctx.font = 'bold 150px Arial, Helvetica, sans-serif';
+    } else if (canvas.width > 900) {
+        ctx.font = 'bold 120px Arial, Helvetica, sans-serif';
+    } else if (canvas.width > 500) {
+        ctx.font = 'bold 90px Arial, Helvetica, sans-serif';
+    } else {
+        ctx.font = 'bold 60px Arial, Helvetica, sans-serif';
+    }
+    ctx.fillStyle = "rgb(192,80,77)";
+    ctx.textAlign = "center";
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
+    ctx.fillText('Points: ' + resultPoints, canvas.width / 2, canvas.height * 4 / 5);
 }
