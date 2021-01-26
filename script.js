@@ -9,6 +9,9 @@ var updateAnimationFrame;
 var startClicked = false;
 var isGameOverScreen = false;
 
+// Logo
+//var logoCircle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'blue');
+
 window.onload = init();
 
 function init() {
@@ -17,6 +20,13 @@ function init() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     ctx = canvas.getContext('2d');
+
+    // Logo
+    /*logoCircle = new Circle(47 / 54 * canvas.width - 10, 8 / 54 * canvas.width - 10, 4 / 54 * canvas.width, 'rgb(128,100,162)');
+    logoCircle.dx = 1;
+    logoCircle.dy = -1;*/
+
+    logo();
 
     // Start Button
     ctx.fillStyle = "rgb(192,80,77)";
@@ -164,7 +174,6 @@ function Circle(x, y, r, c) {
     this.draw = function() {
         ctx.beginPath();
         ctx.fillStyle = this.c;
-        console.log('ctx.arc(' + this.x + ',' + this.y + ',' + this.r + ',' + 0 + ',' + Math.PI * 2 + ')')
         ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
         ctx.fill();
         //console.log(circle.x + ", " + circle.y + ", " + circle.r);
@@ -318,12 +327,6 @@ function Update() {
     updateAnimationFrame = requestAnimationFrame(Update);
 }
 
-window.addEventListener('resize', updateSizes);
-
-function updateSizes() {
-
-}
-
 function gameOver() {
     window.cancelAnimationFrame(updateAnimationFrame);
     rect = null;
@@ -397,3 +400,31 @@ function changeFonts(fontNumber) {
             }
     }
 }
+
+function logo() {
+    ctx.beginPath();
+    ctx.fillStyle = '#4F81BD';
+    ctx.rect(44 / 54 * canvas.width, canvas.width * 2 / 54, canvas.width * 7 / 54, canvas.width * 5 / 54);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(128,100,162)';
+    ctx.arc(47 / 54 * canvas.width, 8 / 54 * canvas.width, 4 / 54 * canvas.width, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgb(155,187,89)';
+    ctx.moveTo(49.5 / 54 * canvas.width, 1 / 54 * canvas.width);
+    ctx.lineTo(53 / 54 * canvas.width, 11 / 54 * canvas.width);
+    ctx.lineTo(46 / 54 * canvas.width, 11 / 54 * canvas.width);
+    ctx.fill();
+
+}
+
+/*function showLogo() {
+    logoCircle.animate();
+    //circle.animate();
+    if (!(circle.x == 47 / 54 * canvas.width && circle.x == 8 / 54 * canvas.width)) {
+        updateAnimationFrame = requestAnimationFrame(Update);
+    }
+}*/
