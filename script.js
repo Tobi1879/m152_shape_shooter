@@ -328,3 +328,9 @@ function Update() {
 
     requestAnimationFrame(Update);
 }
+
+window.addEventListener('resize', updateSizes);
+
+function updateSizes() {
+
+}
