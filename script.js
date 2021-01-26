@@ -4,6 +4,7 @@ var rect = new Rect(1, 1, 1, 1, 'red');
 var circle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'red');
 var triangle = new Triangle(1, 1, 1, 1, 'red');
 var points = 0;
+var resultPoints;
 
 window.onload = init();
 
@@ -90,7 +91,10 @@ function startGame() {
 }
 
 function gameOver() {
-    // todo
+    window.cancelAnimationFrame(update);
+    resultPoints = points;
+    ctx.clearRect(0, canvas.height / 10 - 10, canvas.width, canvas.height);
+
 }
 
 function Triangle(x1, y1, x2, y2, c) {
