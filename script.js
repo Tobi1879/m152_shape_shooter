@@ -1,5 +1,12 @@
+/*
+Modul 152, Leistungsbeurteilung
+26.01.2021, Tobias Locher & Philipp Rüegg
+*/
+
+// global variables
 var canvas;
 var ctx;
+// Example data for the shapes
 var rect = new Rect(1, 1, 1, 1, 'red');
 var circle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'red');
 var triangle = new Triangle(1, 1, 1, 1, 'red');
@@ -8,9 +15,6 @@ var resultPoints;
 var updateAnimationFrame;
 var startClicked = false;
 var isGameOverScreen = false;
-
-// Logo
-//var logoCircle = new Circle(100, 75, ' + 0.0325 * canvas.width + ', 'blue');
 
 window.onload = init();
 
@@ -21,11 +25,7 @@ function init() {
     canvas.height = window.innerHeight;
     ctx = canvas.getContext('2d');
 
-    // Logo
-    /*logoCircle = new Circle(47 / 54 * canvas.width - 10, 8 / 54 * canvas.width - 10, 4 / 54 * canvas.width, 'rgb(128,100,162)');
-    logoCircle.dx = 1;
-    logoCircle.dy = -1;*/
-
+    // create Logo
     logo();
 
     // Start Button
@@ -91,11 +91,19 @@ function startGame() {
     newCircle();
     newRect();
 
-    console.log(canvas.width + ", " + canvas.height);
+    //console.log(canvas.width + ", " + canvas.height);
 
     Update();
 }
 
+/**
+ * 
+ * @param {*} x1     
+ * @param {*} y1 
+ * @param {*} x2 
+ * @param {*} y2 
+ * @param {*} c 
+ */
 function Triangle(x1, y1, x2, y2, c) {
     this.x1 = x1;
     this.y1 = y1;
@@ -314,6 +322,9 @@ canvas.addEventListener('click', function(e) {
         ctx.textAlign = "left";
         ctx.fillStyle = "rgb(192,80,77)";
         ctx.fillText('Points: ' + points, 50, 50);
+
+        // fade out points
+        fadeOut("10", e.clientX, e.clientY, 255, 0, 0);
     }
 })
 
@@ -322,7 +333,6 @@ function Update() {
     circle.animate();
     rect.animate();
     triangle.animate();
-    //circle.animate();
 
     updateAnimationFrame = requestAnimationFrame(Update);
 }
@@ -419,6 +429,22 @@ function logo() {
     ctx.lineTo(46 / 54 * canvas.width, 11 / 54 * canvas.width);
     ctx.fill();
 
+}
+
+function fadeOut(text, x, y, colorR, colorG, colorB) {
+    var alpha = 1.0, // full opacity
+        interval = setInterval(function() {
+            canvas2.width = canvas2.width; // Clears the canvas
+            ctx2.fillStyle = "rgba(" + colorR + ", " + colorG + ", " + colorB + ", " + alpha + ")";
+            ctx2.fillStyle = "rgba(255, 0, 0, " + alpha + ")";
+            ctx2.font = "italic 20pt Arial";
+            ctx2.fillText(text, x, y);
+            alpha = alpha - 0.05; // decrease opacity (fade out)
+            if (alpha < 0) {
+                ctx2.width = ctx2.width;
+                clearInterval(interval);
+            }
+        }, 50);
 }
 
 /*function showLogo() {
