@@ -6,6 +6,8 @@ var triangle = new Triangle(1, 1, 1, 1, 'red');
 var points = 0;
 var resultPoints;
 var updateAnimationFrame;
+var startClicked = false;
+var isGameOverScreen = false;
 
 window.onload = init();
 
@@ -22,16 +24,7 @@ function init() {
     ctx.fillRect(canvas.width / 4, 3 * canvas.height / 8, canvas.width / 2, canvas.height / 4);
     // Start Text
     ctx.fillStyle = "rgb(68, 68, 65)";
-    ctx.font
-    if (canvas.width > 1300) {
-        ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
-    } else if (canvas.width > 900) {
-        ctx.font = 'bold 40px Arial, Helvetica, sans-serif';
-    } else if (canvas.width > 500) {
-        ctx.font = 'bold 30px Arial, Helvetica, sans-serif';
-    } else {
-        ctx.font = 'bold 20px Arial, Helvetica, sans-serif';
-    }
+    changeFonts(1)
     ctx.textAlign = "center";
     ctx.fillText('Start', canvas.width / 2, canvas.height / 2 + 12.5);
 
@@ -44,13 +37,15 @@ function init() {
         //alert("if (x >= " + canvas.width / 4 + "&& x <= " + 3 * canvas.width / 4 + "&& y >=" + 3 * canvas.height / 8 + "&& y <= " + 5 * canvas.height / 8 + ")")
 
         // checken ob der Click auf dem Start Button gemacht (rect)
-        if ((x >= canvas.width / 4) && (x <= 3 * canvas.width / 4) && (y >= 3 * canvas.height / 8) && (y <= 5 * canvas.height / 8)) {
+        if ((x >= canvas.width / 4) && (x <= 3 * canvas.width / 4) && (y >= 3 * canvas.height / 8) && (y <= 5 * canvas.height / 8) && startClicked == false) {
+            startClicked = true;
             startGame();
         }
-    }, { once: true });
+    });
 }
 
 function startGame() {
+    changeFonts(1);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     let countdown = 45;
 
@@ -337,17 +332,65 @@ function gameOver() {
     resultPoints = points;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (canvas.width > 1300) {
-        ctx.font = 'bold 150px Arial, Helvetica, sans-serif';
-    } else if (canvas.width > 900) {
-        ctx.font = 'bold 120px Arial, Helvetica, sans-serif';
-    } else if (canvas.width > 500) {
-        ctx.font = 'bold 90px Arial, Helvetica, sans-serif';
-    } else {
-        ctx.font = 'bold 60px Arial, Helvetica, sans-serif';
-    }
+    changeFonts(2);
     ctx.fillStyle = "rgb(192,80,77)";
     ctx.textAlign = "center";
-    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2);
-    ctx.fillText('Points: ' + resultPoints, canvas.width / 2, canvas.height * 4 / 5);
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height * 2 / 5);
+    ctx.fillText('Points: ' + resultPoints, canvas.width / 2, canvas.height * 3 / 5);
+    changeFonts(3);
+    ctx.fillText('Click to restart', canvas.width / 2, canvas.height * 4 / 5);
+    isGameOverScreen = true;
+}
+
+canvas.addEventListener('click', event => {
+    if (isGameOverScreen == true) {
+        isGameOverScreen = false;
+        points = 0;
+        resultPoints = 0;
+        startGame();
+    }
+});
+
+function changeFonts(fontNumber) {
+    switch (fontNumber) {
+        case 1:
+            {
+                if (canvas.width > 1300) {
+                    ctx.font = 'bold 50px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 900) {
+                    ctx.font = 'bold 40px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 500) {
+                    ctx.font = 'bold 30px Arial, Helvetica, sans-serif';
+                } else {
+                    ctx.font = 'bold 20px Arial, Helvetica, sans-serif';
+                }
+                break;
+            }
+        case 2:
+            {
+                if (canvas.width > 1300) {
+                    ctx.font = 'bold 150px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 900) {
+                    ctx.font = 'bold 120px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 500) {
+                    ctx.font = 'bold 90px Arial, Helvetica, sans-serif';
+                } else {
+                    ctx.font = 'bold 60px Arial, Helvetica, sans-serif';
+                }
+                break;
+            }
+        case 3:
+            {
+                if (canvas.width > 1300) {
+                    ctx.font = 'bold 75px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 900) {
+                    ctx.font = 'bold 60px Arial, Helvetica, sans-serif';
+                } else if (canvas.width > 500) {
+                    ctx.font = 'bold 45px Arial, Helvetica, sans-serif';
+                } else {
+                    ctx.font = 'bold 30px Arial, Helvetica, sans-serif';
+                }
+                break;
+            }
+    }
 }
