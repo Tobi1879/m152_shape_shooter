@@ -251,7 +251,7 @@ canvas.addEventListener('click', function(e) {
         //new Rect
         newRect();
         //Points
-        points += 50;
+        points += 5;
         // remove Ponints Text
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
@@ -281,7 +281,7 @@ canvas.addEventListener('click', function(e) {
         //new Rect
         newTriangle();
         //Points
-        points += 100;
+        points += 15;
         // remove Ponints Text
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
@@ -297,7 +297,7 @@ canvas.addEventListener('click', function(e) {
         //new circle
         newCircle();
         //Points
-        points += 25;
+        points += 10;
         // remove Ponints Text
         ctx.clearRect(0, 0, canvas.width / 3, canvas.height / 10);
         // Punkte Text
@@ -338,8 +338,11 @@ function gameOver() {
     ctx.fillText('GAME OVER', canvas.width / 2, canvas.height * 2 / 5);
     ctx.fillText('Points: ' + resultPoints, canvas.width / 2, canvas.height * 3 / 5);
     changeFonts(3);
-    ctx.fillText('Click to restart', canvas.width / 2, canvas.height * 4 / 5);
-    isGameOverScreen = true;
+    // wait, so that the user doesn't click for restart accidently
+    setTimeout(() => {
+        ctx.fillText('Click to restart', canvas.width / 2, canvas.height * 4 / 5);
+        isGameOverScreen = true;
+    }, 1000)
 }
 
 canvas.addEventListener('click', event => {
